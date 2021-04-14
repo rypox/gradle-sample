@@ -1,0 +1,36 @@
+plugins {
+    id 'java'
+}
+
+import org.apache.tools.ant.filters.*
+
+apply from: 'build.properties'
+
+group 'org.rypox.sample.gradle'
+version '0.0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+project.logger.lifecycle("group: $group")
+project.logger.lifecycle("myProp: $myProp")
+project.logger.lifecycle("kanten: $kanten")
+
+def form = "$kanten Kanten und $ecken Ecken"
+
+task('filterCopy', type: Copy) {
+    from 'src/main/resources'
+    into buildDir
+    filter(ReplaceTokens, tokens: [Farbe: farbe])
+    filter(ReplaceTokens, tokens: [Form: form.toString()])
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+}
+
+test {
+    useJUnitPlatform()
+}
